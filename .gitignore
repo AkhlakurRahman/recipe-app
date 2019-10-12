@@ -1,3 +1,5 @@
 node_modules
 
 dist/js/bundle.js
+
+API_KEY.js
