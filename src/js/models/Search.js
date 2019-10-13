@@ -6,14 +6,14 @@ class Search {
     this.query = query;
   }
 
-  async getRecipe() {
+  async getAllRecipe() {
     try {
       const res = await axios.get(
         `${PROXY}https://www.food2fork.com/api/search?key=${API_KEY}&q=${this.query}`
       );
       this.result = res.data.recipes;
     } catch (error) {
-      alert(error);
+      alert('Something went wrong! :(');
     }
   }
 }
