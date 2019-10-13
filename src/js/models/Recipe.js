@@ -44,6 +44,7 @@ class Recipe {
       'cups',
       'pounds'
     ];
+
     const unitsShortForm = [
       'tbsp',
       'tbsp',
@@ -54,6 +55,8 @@ class Recipe {
       'cup',
       'lb'
     ];
+
+    const units = [...unitsShortForm, 'kg', 'g'];
 
     const newIngredients = this.ingredients.map(el => {
       // Uniform units
@@ -68,9 +71,7 @@ class Recipe {
       // Converting ingredient string into array
       const arrIngredient = ingredient.split(' ');
       // Matching the units between unitsShortForm and arrIngredient
-      const unitIndex = arrIngredient.findIndex(el2 =>
-        unitsShortForm.includes(el2)
-      );
+      const unitIndex = arrIngredient.findIndex(el2 => units.includes(el2));
 
       let objIngredient;
       if (unitIndex > -1) {

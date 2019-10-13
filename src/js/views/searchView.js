@@ -11,6 +11,18 @@ export const resetResult = () => {
   elements.searchResultPages.innerHTML = '';
 };
 
+// Hight light selected items
+export const highlightSelected = id => {
+  const classArr = Array.from(document.querySelectorAll('.results__link'));
+  classArr.forEach(el => {
+    el.classList.remove('results__link--active');
+  });
+
+  document
+    .querySelector(`a[href="#${id}"]`)
+    .classList.add('results__link--active');
+};
+
 // Limit recipe title
 const limitRecipeTitle = (title, limit = 17) => {
   const newTitle = [];
