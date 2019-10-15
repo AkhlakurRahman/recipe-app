@@ -1,8 +1,10 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
+import ShoppingList from './models/ShoppingList';
 import { elements, renderLoader, clearLoader } from './views/base';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
+import * as shoppingListView from './views/shoppingListView';
 
 /** Global state of the app
  * - Search object
@@ -12,8 +14,6 @@ import * as recipeView from './views/recipeView';
  */
 
 const state = {};
-
-console.log(state);
 
 /**
  * SearchController for recipe
@@ -102,6 +102,43 @@ const controlRecipe = async () => {
   window.addEventListener(event, controlRecipe)
 );
 
+/**
+ * ShoppingList Controller
+ */
+
+const shoppingListController = () => {
+  // Create a new ShoppingList if there is none
+  if (!state.shoppingListItem) state.shoppingListItem = new ShoppingList();
+
+  // Add ingredients to the UI
+  state.recipe.ingredients.forEach(el => {
+    const item = state.shoppingListItem.addItem(
+      el.count,
+      el.unit,
+      el.ingredient
+    );
+    shoppingListView.renderShoppingList(item);
+  });
+};
+
+elements.shoppingList.addEventListener('click', e => {
+  const itemId = e.target.closest('.shopping__item').dataset.itemid;
+
+  // Handle delete
+  if (e.target.matches('.shopping__delete, .shopping__delete *')) {
+    // Remove item from state
+    state.shoppingListItem.removeItem(itemId);
+
+    // Remove item from UI
+    shoppingListView.deleteItem(itemId);
+  } else if (e.target.matches('.shopping__count-value')) {
+    const val = parseFloat(e.target.value, 10);
+    if (val > 0) {
+      state.shoppingListItem.updateCount(itemId, val);
+    }
+  }
+});
+
 // Handling recipe button clicks
 elements.recipe.addEventListener('click', e => {
   if (e.target.matches('.btn-decrease, .btn-decrease *')) {
@@ -110,10 +147,13 @@ elements.recipe.addEventListener('click', e => {
       state.recipe.updateServings('dec');
       recipeView.updateRecipeServings(state.recipe);
     }
-  } else if ('.btn-increase, .btn-increase *') {
+  } else if (e.target.matches('.btn-increase, .btn-increase *')) {
     // Increase button is clicked
     state.recipe.updateServings('inc');
     recipeView.updateRecipeServings(state.recipe);
+  } else if (e.target.matches('.recipe__btn--cart, .recipe__btn--cart *')) {
+    shoppingListController();
   }
-  console.log(state.recipe);
 });
+
+window.l = new ShoppingList();
