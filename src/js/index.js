@@ -136,19 +136,14 @@ elements.shoppingList.addEventListener('click', e => {
     shoppingListView.deleteItem(itemId);
   } else if (e.target.matches('.shopping__count-value')) {
     const val = parseFloat(e.target.value, 10);
-    if (val > 0) {
-      state.shoppingListItem.updateCount(itemId, val);
-    }
+
+    state.shoppingListItem.updateCount(itemId, val);
   }
 });
 
 /**
  * LikeController
  */
-// Testing Purpose
-state.likes = new Likes();
-likesView.toggleLikeMenu(state.likes.getNumberOfLikes());
-// Testing Purpose
 
 const likeController = () => {
   if (!state.likes) state.likes = new Likes();
@@ -183,6 +178,18 @@ const likeController = () => {
 
   likesView.toggleLikeMenu(state.likes.getNumberOfLikes());
 };
+
+// Restore liked recipes on page load
+window.addEventListener('load', () => {
+  state.likes = new Likes();
+  state.likes.readStorageData();
+
+  // Toggle like menu button
+  likesView.toggleLikeMenu(state.likes.getNumberOfLikes());
+
+  // Render existing likes to UI
+  state.likes.likes.forEach(like => likesView.renderLikes(like));
+});
 
 // Handling recipe button clicks
 elements.recipe.addEventListener('click', e => {
