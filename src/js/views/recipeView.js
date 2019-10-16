@@ -31,7 +31,7 @@ const renderIngredients = ingredient => `
     <svg class='recipe__icon'>
       <use href='img/icons.svg#icon-check'></use>
     </svg>
-    <div class='recipe__count'>${formatCount(ingredient.count)}</div>
+    <div class='recipe__count'>${formatCount(ingredient.count.toFixed(2))}</div>
     <div class='recipe__ingredient'>
       <span class='recipe__unit'>${ingredient.unit}</span>
       ${ingredient.ingredient}
@@ -39,7 +39,7 @@ const renderIngredients = ingredient => `
   </li>
 `;
 
-export const renderRecipe = recipe => {
+export const renderRecipe = (recipe, isLiked) => {
   const markup = `
   <figure class="recipe__fig">
     <img src="${recipe.img}" alt="${recipe.title}" class="recipe__img">
@@ -83,7 +83,7 @@ export const renderRecipe = recipe => {
 
     <button class="recipe__love">
       <svg class="header__likes">
-        <use href="img/icons.svg#icon-heart-outlined"></use>
+        <use href="img/icons.svg#icon-heart${isLiked ? '' : '-outlined'}"></use>
       </svg>
     </button>
   </div>
